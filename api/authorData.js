@@ -2,7 +2,7 @@ import client from '../utils/client';
 
 const endpoint = client.databaseURL;
 
-// FIXME:  GET ALL AUTHORS
+//  GET ALL AUTHORS
 const getAuthors = () => new Promise((resolve, reject) => {
   fetch(`${endpoint}/authors.json`, {
     method: 'GET',
@@ -11,11 +11,17 @@ const getAuthors = () => new Promise((resolve, reject) => {
     },
   })
     .then((response) => response.json())
-    .then((data) => resolve(Object.values(data)))
+    .then((data) => {
+      if (data) {
+        resolve(Object.values(data));
+      } else {
+        resolve([]);
+      }
+    })
     .catch(reject);
 });
 
-// FIXME: CREATE AUTHOR
+// CREATE AUTHOR
 const createAuthor = (payload) => new Promise((resolve, reject) => {
   fetch(`${endpoint}/authors.json`, {
     method: 'POST',
@@ -81,8 +87,18 @@ const updateAuthor = (payload) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-// TODO: GET A SINGLE AUTHOR'S BOOKS
-const getAuthorBooks = () => { };
+// GET A SINGLE AUTHOR'S BOOKS
+const getAuthorBooks = (firebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/books.json?orderBy="author_id"&equalTo="${firebaseKey}"`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(Object.values(data)))
+    .catch(reject);
+});
 
 export {
   getAuthors,

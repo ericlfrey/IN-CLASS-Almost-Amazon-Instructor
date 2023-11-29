@@ -113,6 +113,10 @@ i > span {
   pointer-events: none;
 }
 
+i {
+  pointer-events: none;
+}
+
 .view-author-books-container {
   display: flex;
   flex-direction: column;
